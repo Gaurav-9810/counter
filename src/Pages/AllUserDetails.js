@@ -10,6 +10,9 @@ const AllUserDetails = () => {
       const [pastSearches, setPastSearches] = useState([]);
       const [showPastSearches, setShowPastSearches] = useState(false);
     
+
+
+
       useEffect(() => {
         // Fetch user data and update the state
         fetch('https://jsonplaceholder.typicode.com/users')
@@ -40,7 +43,8 @@ const AllUserDetails = () => {
         if (searchTerm.length > 0) {
           // Filter the users based on the search term
           const filteredUsers = users.filter((user) =>
-            user.name.toLowerCase() === searchTerm.toLowerCase()
+            
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())
           );
     
           if (filteredUsers.length === 0) {
@@ -60,6 +64,14 @@ const AllUserDetails = () => {
           localStorage.setItem('pastSearches', JSON.stringify([...pastSearches, searchTerm]));
         }
       };
+
+     const handlechange=(e)=>{
+       setSearchTerm(e.target.value);
+     
+       setTimeout(() => {
+         handleSearch()
+       }, 1000);
+     }
     
       // Function to sort users by name
       const handleSort = (order) => {
@@ -81,7 +93,7 @@ const AllUserDetails = () => {
             type="text"
             placeholder="Search by name"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handlechange(e) }
             onKeyUp={(e) => {
               if (e.key === 'Enter') {
                 handleSearch();
